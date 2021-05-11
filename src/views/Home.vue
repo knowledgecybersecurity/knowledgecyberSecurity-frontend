@@ -1,5 +1,5 @@
 <template> 
-    <div class="bgimg">
+    <div class="bgimg" v-bind:style="heroImage">
         <br>
         <br>
         <br>
@@ -64,16 +64,20 @@ export default {
         onCLickGetIn(){
             this.active = true;
             setTimeout(()=>{this.$router.push('/karea');},800);
-        }    
+        },
+    },
+    computed: {
+        heroImage() {
+            return {
+                backgroundImage: `url(${require('../assets/cyber-security-lock.jpg')})`
+            };
+        }
     }
 }
 </script>
 
-
-
 <style scoped>
     .bgimg {
-        background-image: url('../assets/cyber security lock.jpg');
         color: white;
         height: 100%;
         background-position: center;
