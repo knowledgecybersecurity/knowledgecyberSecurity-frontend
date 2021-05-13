@@ -176,6 +176,7 @@
                             @click="onClickWr(unit)">
                             {{unit.name}}
                           </p>
+                          
                           </v-card>                      
                         </v-list-item-content>
                       </v-list-item>                      
