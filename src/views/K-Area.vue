@@ -45,7 +45,7 @@
                       <v-list-item-content>
                         <v-card 
                         class="mx-auto"
-                        @click="onClickKunit(item,ku)"
+                        @click="onClickKunit(item,ku); trackUnitsByKA(ku)"
                         >
                         <v-card-text>
                           {{ku.name}}
@@ -110,15 +110,27 @@ export default {
          }
          return kunits_get;
       },
-      track(item){
+      createItemTag(item) {
         let itemTag = item.name.replaceAll(' ','_');
         itemTag = 'expand_category_' + itemTag;
+        return itemTag;
+      },
+      track(item){
+        const itemTag = this.createItemTag(item);
         console.log('expand-dyn', itemTag);
         this.$gtag.event(itemTag, {
             'event_category' : 'engagement',
             'event_label' : itemTag
         })
       },
+      trackUnitsByKA(item) {
+        const itemTag = this.createItemTag(item);
+        console.log('expand-dyn', itemTag);
+        this.$gtag.event(itemTag, {
+            'event_category' : 'engagement_ku',
+            'event_label' : itemTag
+        })
+      }
   },
   mounted(){
       this.getKAreas();
