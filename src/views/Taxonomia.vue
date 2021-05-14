@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-img src="../assets/TaxonomyChart.png">
+        <v-img src="../assets/TaxonomyChart.jpg">
 
         </v-img>
         <br>
