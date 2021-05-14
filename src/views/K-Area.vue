@@ -17,7 +17,7 @@
                       <v-toolbar
                       color="indigo"
                       v-on ="on"
-                      v-on:click="onClickArrow(item); track()"
+                      v-on:click="onClickArrow(item); track(item)"
                       dark>
                         <v-toolbar-title>
                           <v-icon>mdi-shield-lock</v-icon>
@@ -110,12 +110,14 @@ export default {
          }
          return kunits_get;
       },
-      track(){
-        console.log('evento expand')
-            this.$gtag.event('expand_category', {
-                'event_category' : 'engagement',
-                'event_label' : 'expand_category'
-            })
+      track(item){
+        let itemTag = item.name.replaceAll(' ','_');
+        itemTag = 'expand_category_' + itemTag;
+        console.log('expand-dyn', itemTag);
+        this.$gtag.event(itemTag, {
+            'event_category' : 'engagement',
+            'event_label' : itemTag
+        })
       },
   },
   mounted(){
