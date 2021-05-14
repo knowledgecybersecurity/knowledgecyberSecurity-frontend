@@ -4,7 +4,7 @@
     <div>
       <div class="d-inline-flex">
         <v-btn icon
-        @click="$router.go(-1)"
+        @click="$router.go(-1); trackBackWorkRole()"
         color="blue accent-3">
           <v-icon>mdi-subdirectory-arrow-left</v-icon>
         </v-btn>
@@ -27,7 +27,7 @@
             <v-list-item v-for="unidad in unidadesLorR(m)" :key="unidad.title">
                 <v-list-item-content>
                 <v-card color="green lighten-4">
-                   <v-toolbar color="indigo" dark  @click="unidad.arrow = !unidad.arrow">
+                   <v-toolbar color="indigo" dark  @click="unidad.arrow = !unidad.arrow;trackContentWorkRole()">
                         <v-toolbar-title>{{unidad.title}}</v-toolbar-title>
                         <v-spacer/>
                         <v-btn icon>
@@ -86,6 +86,20 @@ export default {
       else{
         return [this.unidades[2],this.unidades[3]];
       }
+    },
+    trackBackWorkRole(){
+      console.log('back_action_work_role')
+      this.$gtag.event('back_action_work_role', {
+          'event_category' : 'engagement',
+          'event_label' : 'back_action_work_role'
+      })
+    },
+    trackContentWorkRole(){
+      console.log('trackContentWorkRole')
+      this.$gtag.event('content_work_role', {
+          'event_category' : 'engagement',
+          'event_label' : 'content_work_role'
+      })
     },
     getAllKsats(){
       axios.get(BASE_URL+`/work-roles/${this.wrId}/ksat`)

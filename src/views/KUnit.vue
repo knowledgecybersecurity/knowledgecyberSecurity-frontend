@@ -28,7 +28,7 @@
             <v-list-item>
             <v-list-item-content>
                 <v-card color="green lighten-4">
-                    <v-toolbar color="indigo" dark @click="unidades[0].arrow = !unidades[0].arrow">
+                    <v-toolbar color="indigo" dark @click="unidades[0].arrow = !unidades[0].arrow; trackCertifications()">
                         <v-toolbar-title>{{unidades[0].title}}</v-toolbar-title>
                         <v-spacer/>
                         <v-btn icon>
@@ -57,7 +57,7 @@
             <v-list-item>
             <v-list-item-content>
                 <v-card color="green lighten-4">
-                   <v-toolbar color="indigo" dark @click="unidades[1].arrow = !unidades[1].arrow">
+                   <v-toolbar color="indigo" dark @click="unidades[1].arrow = !unidades[1].arrow; trackCongresses()">
                         <v-toolbar-title>{{unidades[1].title}}</v-toolbar-title>
                         <v-spacer/>
                         <v-btn icon>
@@ -84,7 +84,7 @@
             <v-list-item>
             <v-list-item-content>
                 <v-card color="green lighten-4">
-                    <v-toolbar color="indigo" dark @click="unidades[2].arrow = !unidades[2].arrow">
+                    <v-toolbar color="indigo" dark @click="unidades[2].arrow = !unidades[2].arrow; trackTools()">
                         <v-toolbar-title>{{unidades[2].title}}</v-toolbar-title>
                         <v-spacer/>
                         <v-btn icon >
@@ -118,7 +118,7 @@
             <v-list-item>
                 <v-list-item-content>
                 <v-card color="green lighten-4">
-                   <v-toolbar color="indigo" dark @click="unidades[3].arrow = !unidades[3].arrow">
+                   <v-toolbar color="indigo" dark @click="unidades[3].arrow = !unidades[3].arrow; trackPapers()">
                         <v-toolbar-title>{{unidades[3].title}}</v-toolbar-title>
                         <v-spacer/>
                         <v-btn icon>
@@ -157,7 +157,7 @@
             <v-list-item>
                 <v-list-item-content>
                 <v-card color="green lighten-4">
-                   <v-toolbar color="indigo" dark @click="unidades[4].arrow = !unidades[4].arrow">
+                   <v-toolbar color="indigo" dark @click="unidades[4].arrow = !unidades[4].arrow; trackWorRoles()">
                         <v-toolbar-title>{{unidades[4].title}}</v-toolbar-title>
                         <v-spacer/>
                         <v-btn icon>
@@ -244,6 +244,41 @@ export default {
       onClickWr(wr){
         localStorage.setItem('wr_description',wr.description)
          this.$router.push({name: 'WorkRoles', params: {wrName: wr.name, wrId: wr.id}});
+      },
+      trackPapers(){
+        console.log('track papers')
+            this.$gtag.event('papers', {
+                'event_category' : 'engagement',
+                'event_label' : 'papers'
+            })
+      },
+      trackWorRoles(){
+        console.log('track work roles')
+            this.$gtag.event('work_roles', {
+                'event_category' : 'engagement',
+                'event_label' : 'work_roles'
+            })
+      },
+      trackTools(){
+        console.log('evento tools')
+            this.$gtag.event('tools', {
+                'event_category' : 'engagement',
+                'event_label' : 'tools'
+            })
+      },
+      trackCongresses(){
+        console.log('evento category')
+            this.$gtag.event('category', {
+                'event_category' : 'engagement',
+                'event_label' : 'category'
+            })
+      },
+      trackCertifications(){
+        console.log('evento certifications')
+            this.$gtag.event('certifications', {
+                'event_category' : 'engagement',
+                'event_label' : 'certifications'
+            })
       },
   },
   mounted() {

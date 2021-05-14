@@ -3,7 +3,7 @@
         <div>
           <div class="d-inline-flex">
             <v-btn icon
-              @click="$router.go(-1)"
+              @click="$router.go(-1); trackBackResearch()"
               v-on="on"
               color="blue accent-3">
                 <v-icon>mdi-subdirectory-arrow-left</v-icon>
@@ -29,7 +29,7 @@
             append-icon="mdi-plus-circle-outline"
             single-line
             hide-details
-            @click:append="addFilterItems(newKeyword)"
+            @click:append="addFilterItems(newKeyword); trackSearch()"
             class="search-text-field"
             >
           </v-text-field>
@@ -61,7 +61,7 @@
                   <v-card-text  class="text-center" >
                     {{item}}
                     <v-btn icon>
-                       <v-icon @click="removeFilterItems(item)">mdi-minus-circle-outline</v-icon>
+                       <v-icon @click="removeFilterItems(item); trackRemoveFilters()">mdi-minus-circle-outline</v-icon>
                     </v-btn>
                   </v-card-text>
                 </v-card>
@@ -90,7 +90,7 @@
           </v-container>                              
         </v-card>
         <div class="d-flex justify-end my-3">
-          <v-btn depressed color="white" @click="expand = !expand">
+          <v-btn depressed color="white" @click="expand = !expand; trackAdvancedFilters()">
             <span>Advanced Filter</span>
             <v-icon>mdi-cog-outline</v-icon>
           </v-btn>
@@ -124,7 +124,7 @@
         </div>
         <br>
         <div class="mx-auto text-center">
-          <v-btn color="black accent-2" dark @click="onClickFilter">
+          <v-btn color="black accent-2" dark @click="onClickFilter();trackFilter()">
             Search
           </v-btn>
         </div>
@@ -228,6 +228,41 @@
           alert('Please enter at least a keyword');
         }
              
+      },
+      trackSearch(){
+        console.log('evento search')
+            this.$gtag.event('search', {
+                'event_category' : 'engagement',
+                'event_label' : 'search'
+            })
+      },
+      trackFilter(){
+        console.log('evento filter')
+            this.$gtag.event('filter', {
+                'event_category' : 'engagement',
+                'event_label' : 'filter'
+            })
+      },
+      trackAdvancedFilters(){
+        console.log('evento search')
+            this.$gtag.event('advanced_filters', {
+                'event_category' : 'engagement',
+                'event_label' : 'advanced_filters'
+            })
+      },
+      trackRemoveFilters(){
+        console.log('evento search')
+            this.$gtag.event('remove_filters', {
+                'event_category' : 'engagement',
+                'event_label' : 'remove_filters'
+            })
+      },
+      trackBackResearch(){
+        console.log('evento search')
+            this.$gtag.event('back_research', {
+                'event_category' : 'engagement',
+                'event_label' : 'back_research'
+            })
       },
       removeFilterItems(kw){
         let index = this.filterItems.indexOf(kw);

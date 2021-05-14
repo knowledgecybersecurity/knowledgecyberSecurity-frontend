@@ -66,6 +66,7 @@ export default {
             setTimeout(()=>{this.$router.push('/karea');},800);
         },
         track(){
+            console.log('evento enter');
             this.$gtag.event('enter_knowledge', {
                 'event_category' : 'engagement',
                 'event_label' : 'enter_knowledge'
