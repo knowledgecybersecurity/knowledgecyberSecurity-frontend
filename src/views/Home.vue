@@ -39,13 +39,13 @@
             </v-container>
             <div class="relleno"></div>
         </div>
-        <div class="text-center mt-7">
+        <div class="text-center mt-1">
                 <v-btn
                     elevation="5"
-                    :color="active ? 'primary' : 'secondary'"
+                    :color="active ? 'primary' : 'teal lighten-2'"
                     :dark="active"
-                    class="mx-auto"
-                    rounded="xl"
+                    class="mx-auto py-12 px-12 button-font-enter"
+                    rounded="true"
                     @click="onCLickGetIn"
                     >{{ active ? 'Entering KS . . .' : 'Enter' }}</v-btn>
         </div>
@@ -91,6 +91,10 @@ export default {
         font-size: 20px;
         font-weight: 300;
         color: #42ff83;
+    }
+    .button-font-enter {
+        font-size: 26px;
+        color: white;
     }
 </style>
 
