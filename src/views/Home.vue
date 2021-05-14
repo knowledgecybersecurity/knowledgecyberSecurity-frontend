@@ -46,7 +46,7 @@
                     :dark="active"
                     class="mx-auto py-12 px-12 button-font-enter"
                     rounded="true"
-                    @click="onCLickGetIn"
+                    @click="onCLickGetIn(); track()"
                     >{{ active ? 'Entering KS . . .' : 'Enter' }}</v-btn>
         </div>
     </div>
@@ -64,6 +64,12 @@ export default {
         onCLickGetIn(){
             this.active = true;
             setTimeout(()=>{this.$router.push('/karea');},800);
+        },
+        track(){
+            this.$gtag.event('enter_knowledge', {
+                'event_category' : 'engagement',
+                'event_label' : 'enter_knowledge'
+            })
         },
     },
     computed: {
