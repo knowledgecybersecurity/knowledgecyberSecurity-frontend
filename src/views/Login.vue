@@ -1,6 +1,6 @@
 <template> 
     <v-app id="inspire">
-      <v-content>
+      <v-main>
          <v-container fluid>
             <v-layout align-center justify-center>
                <v-flex xs12 sm8 md4>
@@ -29,7 +29,13 @@
                      </v-card-text>
                      <v-card-actions>
                         <v-spacer></v-spacer>
-                         <v-btn :disabled="disableLogin()" color="teal lighten-2" @click="onLogin()">Login</v-btn>
+                         <v-btn class="" :disabled="disableLogin() || loadingLogin" color="teal lighten-2" @click="onLogin()">
+                         <v-progress-circular v-if="loadingLogin"
+                            indeterminate
+                            color="primary"
+                            ></v-progress-circular>
+                            Login
+                         </v-btn>
                      </v-card-actions>
                      <div class="my-3 mx-3 px-3 py-3" align-center justify-center>
                         <label>You do not have an account? </label>
@@ -39,18 +45,22 @@
                </v-flex>
             </v-layout>
          </v-container>
-      </v-content>
+      </v-main>
    </v-app>
 </template>
 
 <script>
+import axios from 'axios';
+import {BASE_URL} from '../variables/variables.js'
+
 export default {
     name: "Login",
     data:()=>({
         loginUser: {
             email: '',
             password: ''
-        }
+        },
+        loadingLogin: false,
     }),
     methods:{
         onLogin(){
@@ -58,8 +68,17 @@ export default {
                 email: this.loginUser.email,
                 password: this.loginUser.password
             }
-            console.log('user to login', userToLogin);
-            
+            this.loadingLogin = true;
+            axios.post(`${BASE_URL}/users/login`, userToLogin)
+            .then((response) =>{
+                console.log(response.data);
+                const { token, user } = response.data;
+                this.loadingLogin = false;
+                localStorage.setItem('user-cyber-vue', JSON.stringify(user));
+                localStorage.setItem('token-cyber-vue', token);
+                this.trackLogin();
+                this.$router.push('/');
+            });
         },
         disableLogin() {
             if (this.loginUser.email.trim() === "" || this.loginUser.password.trim() === "") {
@@ -67,7 +86,13 @@ export default {
             } else {
                 return false;
             }
-        }
+        },
+        trackLogin(){
+            this.$gtag.event('login_user', {
+                'event_category' : 'engagement',
+                'event_label' : 'login_user'
+            })
+        },
     },
     computed: {
         
