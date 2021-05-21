@@ -46,6 +46,48 @@
             </v-layout>
          </v-container>
       </v-main>
+      <v-snackbar
+         v-model="sucessSnackBar.snackbar"
+         :timeout="sucessSnackBar.timeout"
+         absolute
+         left
+         top
+         color="success"
+         outlined
+      >{{ sucessSnackBar.text }}
+      
+         <template v-slot:action="{ attrs }">
+            <v-btn
+               color="blue"
+               text
+               v-bind="attrs"
+               @click="sucessSnackBar.snackbar = false"
+            >
+               Close
+            </v-btn>
+         </template>
+      </v-snackbar>
+      <v-snackbar
+         v-model="errorSnackBar.snackbar"
+         :timeout="errorSnackBar.timeout"
+         absolute
+         left
+         top
+         color="error"
+         outlined
+      >{{ errorSnackBar.text }}
+      
+         <template v-slot:action="{ attrs }">
+            <v-btn
+               color="blue"
+               text
+               v-bind="attrs"
+               @click="errorSnackBar.snackbar = false"
+            >
+               Close
+            </v-btn>
+         </template>
+      </v-snackbar>
    </v-app>
 </template>
 
@@ -56,11 +98,23 @@ import {BASE_URL} from '../variables/variables.js'
 export default {
     name: "Login",
     data:()=>({
-        loginUser: {
-            email: '',
-            password: ''
-        },
-        loadingLogin: false,
+      loginUser: {
+          email: '',
+          password: ''
+      },
+      loadingLogin: false,
+
+      sucessSnackBar : {
+         snackbar: false,
+         text: 'Login successful!!',
+         timeout: 2000
+      },
+      errorSnackBar : {
+         snackbar: false,
+         text: 'Login Error!!',
+         timeout: 2000
+      }
+      ,
     }),
     methods:{
         onLogin(){
@@ -71,13 +125,18 @@ export default {
             this.loadingLogin = true;
             axios.post(`${BASE_URL}/users/login`, userToLogin)
             .then((response) =>{
-                console.log(response.data);
-                const { token, user } = response.data;
-                this.loadingLogin = false;
-                localStorage.setItem('user-cyber-vue', JSON.stringify(user));
-                localStorage.setItem('token-cyber-vue', token);
-                this.trackLogin();
-                this.$router.push('/');
+               console.log(response.data);
+               const { token, user } = response.data;
+               this.loadingLogin = false;
+               localStorage.setItem('user-cyber-vue', JSON.stringify(user));
+               localStorage.setItem('token-cyber-vue', token);
+               this.trackLogin();
+               this.sucessSnackBar.snackbar = true;
+               setTimeout(()=>{this.$router.push('/');},1000);
+            })
+            .catch(() => {
+               this.errorSnackBar.snackbar = true;
+               this.loadingLogin = false;
             });
         },
         disableLogin() {

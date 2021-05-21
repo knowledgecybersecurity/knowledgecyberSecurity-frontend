@@ -49,9 +49,18 @@
                     @click="onCLickGetIn(); track()"
                     >{{ active ? 'Entering KS . . .' : 'Enter' }}</v-btn>
         </div>
-    </div>
 
- 
+        <v-snackbar
+         v-model="sucessSnackBar.snackbar"
+         :timeout="sucessSnackBar.timeout"
+         absolute
+         right
+         top
+         color="teal darken-2"
+         elevation="24"
+        >{{ sucessSnackBar.text }}
+        </v-snackbar>
+    </div>
 </template>
 
 <script>
@@ -59,6 +68,11 @@ export default {
     name: "Home",
     data:()=>({
         active: false,
+        sucessSnackBar : {
+         snackbar: true,
+         text: 'Welcome!!',
+         timeout: 3000
+      },
     }),
     methods:{
         onCLickGetIn(){
