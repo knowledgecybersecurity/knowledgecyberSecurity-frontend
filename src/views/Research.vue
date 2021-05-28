@@ -4,7 +4,6 @@
           <div class="d-inline-flex">
             <v-btn icon
               @click="$router.go(-1); trackBackResearch()"
-              v-on="on"
               color="blue accent-3">
                 <v-icon>mdi-subdirectory-arrow-left</v-icon>
             </v-btn>
@@ -56,7 +55,7 @@
           </v-card-text>
           <v-container fluid>
             <v-row v-if="!filterMode">
-              <v-col v-for="item in filterItems" :key="item">
+              <v-col v-for="item in filterItems" :key="item.id">
                 <v-card color="#42b883" dark>
                   <v-card-text  class="text-center" >
                     {{item}}
@@ -103,7 +102,7 @@
             class="mx-auto"
             >
               <v-list>
-                <v-list-item v-for="adItem in advancedItems" :key="adItem">
+                <v-list-item v-for="adItem in advancedItems" :key="adItem.id">
                   <v-list-item-icon>
                     <v-icon>{{adItem.icon}}</v-icon>
                   </v-list-item-icon>
@@ -135,6 +134,7 @@
           <v-card-title>
             Search Results
           </v-card-title>
+          <div v-if="loadingData">Loading...</div>
           <v-data-table
             :headers="headers"
             :items="papers"
@@ -155,15 +155,28 @@
                   <td>{{ item.doi }}</td>
                   <td>{{ item.authors }}</td>
                   <td>{{ item.documentType }}</td>
+                  <td>
+                    <v-btn
+                      @click="selectBookMarkFavorite(item)"
+                      class="ma-2"
+                      dark
+                    >
+                      <v-icon
+                        dark
+                      >
+                        bookmark
+                      </v-icon>
+                    </v-btn>
+                  </td>
                   </tr>
                </tbody>
             </template>
           </v-data-table>
         </v-card>
         <br>
-        <v-header v-if="!filterActive" class="d-flex justify-center">
+        <div v-if="!filterActive" class="d-flex justify-center">
           No papers have been filtered yet
-        </v-header>
+        </div>
         
         
     </v-container>
@@ -208,11 +221,11 @@
           { text: 'Doc. Type', value: 'documentType' },
         ],
         papers: [
-          {title: '',
-          year: '',
-          doi: '',
-          authors: '',
-          documentType: ''},
+          // {title: '',
+          // year: '',
+          // doi: '',
+          // authors: '',
+          // documentType: ''},
 
         ],
       }
@@ -269,28 +282,42 @@
         this.filterItems.splice(index,1);        
       },
       onClickFilter(){
-        if(this.filterMode && this.checkedKO.id == -1){
+        this.loadingData = true;
+        const userLoged = JSON.parse(localStorage.getItem('user-cyber-vue'));
+        const token = localStorage.getItem('token-cyber-vue');
+
+        if (token) {
+          console.log('SE EEJCUTA');
+          if(this.filterMode && this.checkedKO.id == -1){
           alert('Chooseat least 1 knowledge objective')
-        }
-        else{
-          this.loadingData = true;
-          const year1 = this.advancedItems[1].value;
-          const year2 = this.endYear;
-          const title = this.advancedItems[0].value;
-          const doi = this.advancedItems[2].value;
-          const autor = this.advancedItems[3].value;
-          let kws = this.filterItems.join(';');
-          let idKO = this.checkedKO.id;
-          if (this.filterMode){kws ='';}
-          else{
-            idKO = '';
           }
-          axios.get(BASE_URL+`/knowledge-units/${this.idKU}/sectors/${this.sectorID}/papers?keywords=${kws}&startYear=${year1}&endYear=${year2}&title=${title}&doi=${doi}&author=${autor}&koId=${idKO}`)
-          .then( (response) => {
-            this.papers = response.data; 
-            this.filterActive = true;
-            this.loadingData = false;
-        });
+          else{
+            console.log('Comienza a cargar');
+            const year1 = this.advancedItems[1].value;
+            const year2 = this.endYear;
+            const title = this.advancedItems[0].value;
+            const doi = this.advancedItems[2].value;
+            const autor = this.advancedItems[3].value;
+            let kws = this.filterItems.join(';');
+            let idKO = this.checkedKO.id;
+            if (this.filterMode){kws ='';}
+            else{
+              idKO = '';
+            }
+            console.log('Se llamara a axios');
+            console.log('this.loadingData', this.loadingData);
+            axios.get(BASE_URL+`/knowledge-units/${this.idKU}/sectors/${this.sectorID}/papers/${userLoged.id}?keywords=${kws}&startYear=${year1}&endYear=${year2}&title=${title}&doi=${doi}&author=${autor}&koId=${idKO}`)
+            .then( (response) => {
+              this.papers = response.data; 
+              console.log('Se obutvo los papers');
+              console.log('******************');
+              console.log(this.papers);
+              this.filterActive = true;
+              this.loadingData = false;
+          });
+        }
+        } else {
+          alert("Necesitas logearte para buscar!!");
         }
         
       },
@@ -303,6 +330,15 @@
           o.clicked = false;
           return o;
           });          
+        });
+      },
+      selectBookMarkFavorite(item) {
+        console.log('selecciono', item);
+        const idUser = JSON.parse(localStorage.getItem('user-cyber-vue')).id;
+        const idPaper = item.id;
+        axios.get(BASE_URL+`/users/${idUser}/${idPaper}`)
+        .then((response) => {
+          console.log(response);
         });
       },
       getBestKW(){
