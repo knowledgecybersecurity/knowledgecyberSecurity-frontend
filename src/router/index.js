@@ -8,6 +8,7 @@ import Research from '../views/Research.vue';
 import WorkRoles from '../views/WorkRole.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
+import Favorites from '../views/Favorites.vue';
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/favorites',
+    name: 'Favorites',
+    component: Favorites,
   },
   {
     path: '/login',

@@ -121,20 +121,34 @@
             </v-card>
           </v-expand-transition>
         </div>
-        <br>
-        <div class="mx-auto text-center">
-          <v-btn color="black accent-2" dark @click="onClickFilter();trackFilter()">
-            Search
+        <br/>
+        <div class="mx-auto text-center my-3">
+          <v-btn color="black accent-2" :disabled="loadingData" dark @click="onClickFilter();trackFilter()">
+            <v-progress-circular v-if="loadingData"
+                            indeterminate
+                            color="primary"
+                            ></v-progress-circular>
+                         Search
           </v-btn>
         </div>
-        <br>
+        <v-alert
+          :value="alert"
+          color="blue-grey darken-1"
+          dark
+          border="top"
+          icon="mdi-home"
+          transition="scale-transition"
+        >
+          In order to enjoy the search services of this page you will have to <router-link  to="/login">log in</router-link> or <router-link  to="/sign-up">register</router-link>.
+        </v-alert>
+        <br/>
         <v-divider></v-divider>
         <br>
         <v-card>
           <v-card-title>
             Search Results
           </v-card-title>
-          <div v-if="loadingData">Loading...</div>
+          <!-- <div v-if="loadingData">Loading...</div> -->
           <v-data-table
             :headers="headers"
             :items="papers"
@@ -156,13 +170,34 @@
                   <td>{{ item.authors }}</td>
                   <td>{{ item.documentType }}</td>
                   <td>
-                    <v-btn
+                    <v-btn v-if="!item.isFavoriteForThisUser" :disabled="item.loading" color="teal lighten-2"
                       @click="selectBookMarkFavorite(item)"
                       class="ma-2"
                       dark
                     >
+                    <v-progress-circular v-if="item.loading"
+                            indeterminate
+                            color="primary"
+                            ></v-progress-circular>
                       <v-icon
                         dark
+                        v-if="!item.loading"
+                      >
+                        bookmark
+                      </v-icon>
+                    </v-btn>
+                    <v-btn v-if="item.isFavoriteForThisUser" :disabled="item.loading" color="black"
+                      @click="unselectBookMarkFavorite(item)"
+                      class="ma-2"
+                      dark
+                    >
+                    <v-progress-circular v-if="item.loading"
+                            indeterminate
+                            color="primary"
+                            ></v-progress-circular>
+                      <v-icon
+                        dark
+                        v-if="!item.loading"
                       >
                         bookmark
                       </v-icon>
@@ -228,6 +263,7 @@
           // documentType: ''},
 
         ],
+        alert: false,
       }
     },
     methods:{
@@ -282,7 +318,6 @@
         this.filterItems.splice(index,1);        
       },
       onClickFilter(){
-        this.loadingData = true;
         const userLoged = JSON.parse(localStorage.getItem('user-cyber-vue'));
         const token = localStorage.getItem('token-cyber-vue');
 
@@ -293,6 +328,7 @@
           }
           else{
             console.log('Comienza a cargar');
+            this.loadingData = true;
             const year1 = this.advancedItems[1].value;
             const year2 = this.endYear;
             const title = this.advancedItems[0].value;
@@ -317,7 +353,7 @@
           });
         }
         } else {
-          alert("Necesitas logearte para buscar!!");
+          this.alert = true;
         }
         
       },
@@ -333,11 +369,22 @@
         });
       },
       selectBookMarkFavorite(item) {
-        console.log('selecciono', item);
         const idUser = JSON.parse(localStorage.getItem('user-cyber-vue')).id;
         const idPaper = item.id;
         axios.get(BASE_URL+`/users/${idUser}/${idPaper}`)
         .then((response) => {
+          item.isFavoriteForThisUser = true;
+          this.papers = this.papers.map(x => x.id === item.id ? item : x);
+          console.log(response);
+        });
+      },
+      unselectBookMarkFavorite(item) {
+        const idUser = JSON.parse(localStorage.getItem('user-cyber-vue')).id;
+        const idPaper = item.id;
+        axios.get(BASE_URL+`/users/unmarked/${idUser}/${idPaper}`)
+        .then((response) => {
+          item.isFavoriteForThisUser = false;
+          this.papers = this.papers.map(x => x.id === item.id ? item : x);
           console.log(response);
         });
       },
@@ -366,6 +413,13 @@
     mounted(){
       this.getKOs();
       this.getBestKW();
+    },
+    rowIsFavorite(item) {
+      if (item.isFavoriteForThisUser) {
+        return "teal lighten-5"
+      } else {
+        return "white";
+      }
     }
   }
 </script>

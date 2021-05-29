@@ -10,7 +10,32 @@
     <div class="links">
       <router-link  to="/">Home</router-link>
       <router-link v-if="!isLoged()" to="/login">Login</router-link>
-      <label v-if="isLoged()" @click="logout()">Logout</label>
+      <!-- <label v-if="isLoged()" @click="logout()">Logout</label> -->
+    </div>
+    <div v-if="isLoged()">
+      <v-col cols="12">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="teal lighten-2"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <!-- {{ getUserEmail() }} -->
+            <v-icon>mdi-account-circle</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in items"
+              :key="index"
+            >
+              <v-list-item-title @click="selectProfileAction(item)">{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
     </div>
        
   </v-app-bar>
@@ -23,6 +48,11 @@
 export default {
     name: "App",
     data:()=>({
+      items: [
+        // { title: 'Profile', action: 'profile'},
+        { title: 'Favorites', action: 'favorites'},
+        { title: 'Log Out', action: 'logout'},
+      ],
     }),
     methods:{
       isLoged() {
@@ -31,7 +61,31 @@ export default {
       },
       logout() {
         localStorage.removeItem('token-cyber-vue');
+        localStorage.removeItem('user-cyber-vue');
         this.$router.push('/login');
+      },
+      getUserEmail() {
+        const user = JSON.parse(localStorage.getItem('user-cyber-vue'));
+        return user.email;
+      },
+      selectProfileAction(item) {
+        switch (item.action) {
+          case 'profile':
+            
+            break;
+
+          case 'favorites':
+            this.$router.push('/favorites');
+            console.log('a favoritos');
+            break;
+          
+          case 'logout':
+            this.logout();
+            break;
+        
+          default:
+            break;
+        }
       }
     },
     computed: {
