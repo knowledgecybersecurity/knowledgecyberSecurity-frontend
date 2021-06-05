@@ -27,7 +27,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item
+            <v-list-item class="cursor"
               v-for="(item, index) in items"
               :key="index"
             >
@@ -99,6 +99,9 @@ export default {
   margin: 20px;
   text-decoration: none;
   color: #FFFFFF;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>
 

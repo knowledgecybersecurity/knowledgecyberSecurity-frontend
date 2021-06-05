@@ -21,7 +21,7 @@
           </div>
         </div>
         <div v-if="!filterMode">
-          <h1 class="text-center mx-auto mb-6">Search by Keywords</h1>
+          <h1 class="text-center mx-auto mb-6">Search {{this.$route.params.researchName}} Papers by Keywords</h1>
           <v-text-field
             v-model="newKeyword"
             label="Keyword"
@@ -212,8 +212,17 @@
         <div v-if="!filterActive" class="d-flex justify-center">
           No papers have been filtered yet
         </div>
-        
-        
+        <v-snackbar
+          v-model="snackBarBookMark.show"
+          :timeout="snackBarBookMark.timeout"
+          color="teal darken-2"
+        >
+          {{ snackBarBookMark.text }}
+
+          <template>
+          </template>
+        </v-snackbar>
+            
     </v-container>
 </template>
 
@@ -264,6 +273,11 @@
 
         ],
         alert: false,
+        snackBarBookMark: {
+          show: false,
+          text: '',
+          timeout: 2000,
+        }
       }
     },
     methods:{
@@ -376,6 +390,8 @@
           item.isFavoriteForThisUser = true;
           this.papers = this.papers.map(x => x.id === item.id ? item : x);
           console.log(response);
+          this.snackBarBookMark.text = 'Add to favorites';
+          this.snackBarBookMark.show = true;
         });
       },
       unselectBookMarkFavorite(item) {
@@ -386,6 +402,8 @@
           item.isFavoriteForThisUser = false;
           this.papers = this.papers.map(x => x.id === item.id ? item : x);
           console.log(response);
+          this.snackBarBookMark.text = 'Remove from favorites';
+          this.snackBarBookMark.show = true;
         });
       },
       getBestKW(){

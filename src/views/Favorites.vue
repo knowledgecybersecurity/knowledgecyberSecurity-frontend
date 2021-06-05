@@ -3,7 +3,28 @@
       <v-main>
          <v-container fluid>
             <v-layout align-center justify-center>
+                
                <v-flex xs12 sm8>
+                   <div>
+                        <div class="d-inline-flex">
+                            <v-btn icon
+                            @click="$router.go(-1); trackBackResearch()"
+                            color="blue accent-3">
+                                <v-icon>mdi-subdirectory-arrow-left</v-icon>
+                            </v-btn>
+                        </div>
+                        <div class="d-inline-flex">
+                            <h2>
+                            Back
+                            </h2>
+                        </div>
+                        <div class="d-flex justify-end switch-big">
+                            <v-switch
+                            class="big-label"
+                            v-model="filterMode"
+                            :label="filterMode? 'By Knowledge Objectives': 'By keywords'"></v-switch>
+                        </div>
+                    </div>
                     <template>
                          <v-toolbar dark color="teal lighten-2">
                         <v-toolbar-title>Favorite papers</v-toolbar-title>
@@ -86,6 +107,13 @@ export default {
             .catch(() => {
                this.errorSnackBar.snackbar = true;
             });
+    },
+    trackBackResearch(){
+        console.log('evento search')
+            this.$gtag.event('back_research', {
+                'event_category' : 'engagement',
+                'event_label' : 'back_research'
+            })
     },
     computed: {
         

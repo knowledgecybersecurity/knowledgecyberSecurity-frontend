@@ -4,21 +4,20 @@
         <br>
         <br>
         <div class="ml-6">
-            <h1>TAXONOMÍA DE CIBERSEGURIDAD</h1>
-            <h1>BASADA EN ACM</h1>
+            <h1>CYBERSECURITY TAXONOMY</h1>
+            <h1>BASED ON ACM</h1>
             <div class="mt-2 subhdr ml-6">
                 <p>
-                <i>Una taxonomía basada en las áreas de conocimientos</i>
+                <i>A taxonomy based on knowledge areas</i>
                 </p>
                 <p>
-                <i>del ACM para cubrir 
-                líneas de investigación.</i>
+                <i>of the ACM to cover lines of research.</i>
                 </p>
             </div>
         </div>
         <div>
             <v-container class="pl-2">
-                <h3>La taxonomía se compone de lo siguiente:</h3>
+                <h3>The taxonomy consists of the following:</h3>
                 <br>
                 <ul>
                     <li>Knowledge Area (KA) y New Trends</li>
@@ -39,7 +38,7 @@
             </v-container>
             <div class="relleno"></div>
         </div>
-        <div class="text-center mt-1">
+        <div class="text-center">
                 <v-btn
                     elevation="5"
                     :color="active ? 'primary' : 'teal lighten-2'"
@@ -56,9 +55,10 @@
          absolute
          right
          top
+         shaped
          color="teal darken-2"
          elevation="24"
-        >{{ sucessSnackBar.text }}
+        ><v-icon>mdi-account-circle</v-icon>{{ sucessSnackBar.text }}
         </v-snackbar>
     </div>
 </template>
