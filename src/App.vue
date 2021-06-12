@@ -10,6 +10,7 @@
     <div class="links">
       <router-link  to="/">Home</router-link>
       <router-link  to="/about">About</router-link>
+      <router-link v-if="isLoged()" to="/publications">Publications</router-link>
       <router-link v-if="!isLoged()" to="/login">Login</router-link>
       <!-- <label v-if="isLoged()" @click="logout()">Logout</label> -->
     </div>

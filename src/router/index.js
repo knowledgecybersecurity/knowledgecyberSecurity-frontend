@@ -9,6 +9,7 @@ import WorkRoles from '../views/WorkRole.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
 import Favorites from '../views/Favorites.vue';
+import Publications from '../views/Publications.vue';
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/publications',
+    name: 'Publications',
+    component: Publications,
   },
   {
     path: '/about',
