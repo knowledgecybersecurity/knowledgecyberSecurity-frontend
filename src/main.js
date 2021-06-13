@@ -1,17 +1,23 @@
-import Vue from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify';
-import router from './router';
+import Vue from "vue";
+import App from "./App.vue";
+import vuetify from "./plugins/vuetify";
+import router from "./router";
 import VueGtag from "vue-gtag";
+import swal from "sweetalert2";
+window.Swal = swal;
 
-Vue.use(VueGtag, {
-  config: { id: "UA-196993715-1" }
-}, router);
+Vue.use(
+  VueGtag,
+  {
+    config: { id: "UA-196993715-1" },
+  },
+  router
+);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   vuetify,
   router,
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
