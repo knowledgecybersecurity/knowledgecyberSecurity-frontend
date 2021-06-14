@@ -30,7 +30,7 @@
                         {{item.title}}
                       </v-list-item-title>
                       <v-list-item-subtitle
-                        >{{item.firstParagraph.substring(0,40)}}</v-list-item-subtitle
+                        >{{item.firstParagraph.substring(0,100) + '...'}}</v-list-item-subtitle
                       >
                     </v-list-item-content>
 
