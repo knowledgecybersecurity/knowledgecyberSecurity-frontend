@@ -6,24 +6,31 @@
           <v-flex xs12 sm8 md4>
             <h2>Publications</h2>
             <v-row>
-              <v-col class="text-right">
+              <v-col cols="12" class="text-right">
                 <v-btn @click="goToAddPublication()">+ Add Publication</v-btn>
+              </v-col>
+              <v-col v-if="loadingPublication" cols="12" class="text-center">
+                <v-progress-circular
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
               </v-col>
             </v-row>
 
             <v-row>
+                
+
               <!-- insert list publications -->
               <v-col cols="12">
-                <v-card class="mx-auto" max-width="auto" outlined>
+                <v-card v-for="(item, index) in publications" :key="index" class="mx-auto" max-width="auto" outlined>
                   <v-list-item three-line>
                     <v-list-item-content>
-                      <div class="text-overline mb-4">Insert autor</div>
+                      <div class="text-overline mb-4">{{item.userDTO.firstName}}, {{item.userDTO.lastName}}</div>
                       <v-list-item-title class="text-h5 mb-1">
-                        Insert Title
+                        {{item.title}}
                       </v-list-item-title>
                       <v-list-item-subtitle
-                        >first 50 caracters of first
-                        paragraph...</v-list-item-subtitle
+                        >{{item.firstParagraph.substring(0,40)}}</v-list-item-subtitle
                       >
                     </v-list-item-content>
 
@@ -31,7 +38,12 @@
                       tile
                       size="80"
                       color="grey"
-                    ></v-list-item-avatar>
+                    >
+                    <img
+                        v-bind:src="item.imageUrl"
+                        alt="user"
+                      >
+                    </v-list-item-avatar>
                   </v-list-item>
 
                   <v-card-actions>
@@ -48,13 +60,30 @@
 </template>
 
 <script>
+import axios from "axios";
+import { BASE_URL } from "../variables/variables";
+
 export default {
   name: "Publications",
-  data: () => ({}),
+  data: () => ({
+    publications: [],
+    loadingPublication: false
+  }),
   methods: {
     goToAddPublication() {
       this.$router.push("/addPublication");
     },
+    getPublications(page) {
+      this.loadingPublication = true;
+      axios.get(`${BASE_URL}/publications/listAll/${page}/10`)
+        .then((response) =>{
+          this.publications = response.data.content;
+          this.loadingPublication = false;
+        });
+    }
+  },
+  mounted(){
+      this.getPublications(0);
   },
   computed: {},
 };
