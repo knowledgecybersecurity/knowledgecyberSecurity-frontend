@@ -47,9 +47,13 @@
                   </v-list-item>
 
                   <v-card-actions>
-                    <v-btn outlined rounded text> Open </v-btn>
+                    <v-btn @click="goToPublication(item.id)" outlined rounded text> Open </v-btn>
                   </v-card-actions>
                 </v-card>
+                <v-col cols="12" class="text-right">
+                <v-btn v-if="currentPagination>0" @click="prevPage(--currentPagination)">prev</v-btn>
+                <v-btn v-if="!isLast" @click="nextPage(++currentPagination)">next</v-btn>
+              </v-col>
               </v-col>
             </v-row>
           </v-flex>
@@ -67,23 +71,37 @@ export default {
   name: "Publications",
   data: () => ({
     publications: [],
-    loadingPublication: false
+    loadingPublication: false,
+    currentPagination: 0,
+    isLast: true,
   }),
   methods: {
+    goToPublication(id) {
+      this.$router.push(`/publication/${id}`);
+    },
     goToAddPublication() {
       this.$router.push("/addPublication");
     },
     getPublications(page) {
+      this.currentPagination = page;
+      this.publications = [];
       this.loadingPublication = true;
-      axios.get(`${BASE_URL}/publications/listAll/${page}/10`)
+      axios.get(`${BASE_URL}/publications/listAll/${page}/5`)
         .then((response) =>{
           this.publications = response.data.content;
           this.loadingPublication = false;
+          this.isLast = response.data.last;
         });
+    },
+    nextPage(page) {
+      this.getPublications(page);
+    },
+    prevPage(page) {
+      this.getPublications(page);
     }
   },
   mounted(){
-      this.getPublications(0);
+      this.getPublications(this.currentPagination);
   },
   computed: {},
 };

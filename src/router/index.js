@@ -11,6 +11,7 @@ import SignUp from "../views/SignUp.vue";
 import Favorites from "../views/Favorites.vue";
 import Publications from "../views/Publications.vue";
 import AddPublication from "../views/AddPublication.vue";
+import Publication from "../views/Publication.vue";
 
 Vue.use(VueRouter);
 
@@ -78,6 +79,11 @@ const routes = [
     path: "/taxonomyChart",
     name: "Taxonomia",
     component: Taxonomia,
+  },
+  {
+    path: "/publication/:idPublication",
+    name: "Publication",
+    component: Publication,
   },
 ];
 
