@@ -14,6 +14,7 @@ import AddPublication from "../views/AddPublication.vue";
 import Publication from "../views/Publication.vue";
 import MyPublications from "../views/MyPublications.vue";
 import UpdatePublication from "../views/UpdatePublication.vue";
+import PublicationsPending from "../views/PublicationsPending.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: "/publications",
     name: "Publications",
     component: Publications,
+  },
+  {
+    path: "/publications-pending",
+    name: "PublicationsPending",
+    component: PublicationsPending,
   },
   {
     path: "/myPublications/:id",

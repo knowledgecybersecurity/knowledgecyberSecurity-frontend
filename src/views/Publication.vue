@@ -4,6 +4,18 @@
       <v-container fluid>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
+            <div>
+      <div class="d-inline-flex">
+        <v-btn icon
+        @click="$router.go(-1); trackBackWorkRole()"
+        color="blue accent-3">
+          <v-icon>mdi-subdirectory-arrow-left</v-icon>
+        </v-btn>
+      </div>
+      <div class="d-inline-flex">
+           <h2>Back</h2>
+      </div>
+    </div>
             <h1>{{publication.title}}</h1>
             <v-row>
               <v-col cols="12" class="my-3">
@@ -61,6 +73,13 @@ export default {
       loadingPublication: false,
   }),
   methods: {
+    trackBackWorkRole(){
+      console.log('back_action_work_role')
+      this.$gtag.event('back_action_work_role', {
+          'event_category' : 'engagement',
+          'event_label' : 'back_action_work_role'
+      })
+    },
     getPublication() {
         this.loadingPublication = true;
         const id = this.$route.params.idPublication;
