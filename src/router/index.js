@@ -12,6 +12,8 @@ import Favorites from "../views/Favorites.vue";
 import Publications from "../views/Publications.vue";
 import AddPublication from "../views/AddPublication.vue";
 import Publication from "../views/Publication.vue";
+import MyPublications from "../views/MyPublications.vue";
+import UpdatePublication from "../views/UpdatePublication.vue";
 
 Vue.use(VueRouter);
 
@@ -27,9 +29,19 @@ const routes = [
     component: Publications,
   },
   {
+    path: "/myPublications/:id",
+    name: "MyPublications",
+    component: MyPublications,
+  },
+  {
     path: "/addPublication",
     name: "AddPublication",
     component: AddPublication,
+  },
+  {
+    path: "/updatePublication/:id",
+    name: "UpdatePublication",
+    component: UpdatePublication,
   },
   {
     path: "/about",
