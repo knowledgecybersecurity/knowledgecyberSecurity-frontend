@@ -105,7 +105,7 @@
                       indeterminate
                       color="primary"
                     ></v-progress-circular>
-                    Add
+                    Edit
                   </v-btn>
                 </v-card-actions>
               </v-form>
@@ -175,7 +175,7 @@ export default {
         .then((response) => {
           if (response.data) {
             Swal.fire("Good job!", "Yo updated a publication", "success");
-            this.$router.push("/");
+            // this.$router.push("/");
           }
         })
         .catch(() => {
