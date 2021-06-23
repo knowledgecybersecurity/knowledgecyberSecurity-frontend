@@ -41,6 +41,9 @@
                         <label>You do not have an account? </label>
                         <label><router-link to="/sign-up">Sign up here</router-link></label>
                      </div>
+                     <div class="mx-3 px-3 py-3" align-center justify-center>
+                        <label><router-link to="/reset-password">Do not you remember your password?</router-link></label>
+                     </div>
                   </v-card>
                </v-flex>
             </v-layout>

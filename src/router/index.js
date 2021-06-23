@@ -15,6 +15,7 @@ import Publication from "../views/Publication.vue";
 import MyPublications from "../views/MyPublications.vue";
 import UpdatePublication from "../views/UpdatePublication.vue";
 import PublicationsPending from "../views/PublicationsPending.vue";
+import ResetPassword from "../views/ResetPassword.vue";
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: ResetPassword,
   },
   {
     path: "/publications",
