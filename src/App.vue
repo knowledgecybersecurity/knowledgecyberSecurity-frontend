@@ -6,12 +6,11 @@
       <div class="links">
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
+        <router-link to="/publications">Publications</router-link>
         <router-link v-if="isAdmin()" to="/publications-pending"
           >Publications Pending</router-link
         >
-        <router-link v-if="isLoged()" to="/publications"
-          >Publications</router-link
-        >
+
         <router-link v-if="!isLoged()" to="/login">Login</router-link>
         <!-- <label v-if="isLoged()" @click="logout()">Logout</label> -->
       </div>
@@ -57,13 +56,13 @@ export default {
   }),
   methods: {
     isAdmin() {
-        const user = JSON.parse(localStorage.getItem('user-cyber-vue'));
-        if(user) {
-          return user.rol == 'ROLE_ADMIN' ? true : false;
-        } else {
-          return false;
-        }
-      },
+      const user = JSON.parse(localStorage.getItem("user-cyber-vue"));
+      if (user) {
+        return user.rol == "ROLE_ADMIN" ? true : false;
+      } else {
+        return false;
+      }
+    },
     isLoged() {
       const token = localStorage.getItem("token-cyber-vue");
       return token === null ? false : true;

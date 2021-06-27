@@ -7,53 +7,68 @@
             <h2>Publications</h2>
             <v-row>
               <v-col cols="12" class="text-right">
-                <v-btn @click="goToAddPublication()">+ Add Publication</v-btn>
+                <v-btn v-if="isLoged()" @click="goToAddPublication()"
+                  >+ Add Publication</v-btn
+                >
               </v-col>
               <v-col v-if="loadingPublication" cols="12" class="text-center">
                 <v-progress-circular
-                    indeterminate
-                    color="primary"
-                  ></v-progress-circular>
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
               </v-col>
             </v-row>
 
             <v-row>
-                
-
               <!-- insert list publications -->
               <v-col cols="12">
-                <v-card v-for="(item, index) in publications" :key="index" class="mx-auto" max-width="auto" outlined>
+                <v-card
+                  v-for="(item, index) in publications"
+                  :key="index"
+                  class="mx-auto"
+                  max-width="auto"
+                  outlined
+                >
                   <v-list-item three-line>
                     <v-list-item-content>
-                      <div class="text-overline mb-4">{{item.userDTO.firstName}}, {{item.userDTO.lastName}}</div>
+                      <div class="text-overline mb-4">
+                        {{ item.userDTO.firstName }},
+                        {{ item.userDTO.lastName }}
+                      </div>
                       <v-list-item-title class="text-h5 mb-1">
-                        {{item.title}}
+                        {{ item.title }}
                       </v-list-item-title>
-                      <v-list-item-subtitle
-                        >{{item.firstParagraph.substring(0,100) + '...'}}</v-list-item-subtitle
-                      >
+                      <v-list-item-subtitle>{{
+                        item.firstParagraph.substring(0, 100) + "..."
+                      }}</v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <v-list-item-avatar
-                      tile
-                      size="80"
-                      color="grey"
-                    >
-                    <img
-                        v-bind:src="item.imageUrl"
-                        alt="user"
-                      >
+                    <v-list-item-avatar tile size="80" color="grey">
+                      <img v-bind:src="item.imageUrl" alt="user" />
                     </v-list-item-avatar>
                   </v-list-item>
 
                   <v-card-actions>
-                    <v-btn @click="goToPublication(item.id)" outlined rounded text> Open </v-btn>
+                    <v-btn
+                      @click="goToPublication(item.id)"
+                      outlined
+                      rounded
+                      text
+                    >
+                      Open
+                    </v-btn>
                   </v-card-actions>
                 </v-card>
                 <v-col cols="12" class="text-right">
-                <v-btn v-if="currentPagination>0" @click="prevPage(--currentPagination)">prev</v-btn>
-                <v-btn v-if="!isLast" @click="nextPage(++currentPagination)">next</v-btn>
-              </v-col>
+                  <v-btn
+                    v-if="currentPagination > 0"
+                    @click="prevPage(--currentPagination)"
+                    >prev</v-btn
+                  >
+                  <v-btn v-if="!isLast" @click="nextPage(++currentPagination)"
+                    >next</v-btn
+                  >
+                </v-col>
               </v-col>
             </v-row>
           </v-flex>
@@ -86,8 +101,9 @@ export default {
       this.currentPagination = page;
       this.publications = [];
       this.loadingPublication = true;
-      axios.get(`${BASE_URL}/publications/listAll/${page}/5`)
-        .then((response) =>{
+      axios
+        .get(`${BASE_URL}/publications/listAll/${page}/5`)
+        .then((response) => {
           this.publications = response.data.content;
           this.loadingPublication = false;
           this.isLast = response.data.last;
@@ -98,10 +114,14 @@ export default {
     },
     prevPage(page) {
       this.getPublications(page);
-    }
+    },
+    isLoged() {
+      const token = localStorage.getItem("token-cyber-vue");
+      return token === null ? false : true;
+    },
   },
-  mounted(){
-      this.getPublications(this.currentPagination);
+  mounted() {
+    this.getPublications(this.currentPagination);
   },
   computed: {},
 };
